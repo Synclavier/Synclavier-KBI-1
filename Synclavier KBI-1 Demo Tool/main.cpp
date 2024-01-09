@@ -84,14 +84,14 @@ void MU_ReadProc(const MIDIPacketList *pktlist, void *readProcRefCon, void *srcC
     auto&   lst = *pktlist;
     auto    ppk = &lst.packet[0];
 
-    // We are handed a MIDIPacketList by a callback from MIDI Services.
-    // We forward the MIDIPacketLists to MIDI Event processing where they are converted to Synclavier MIDI Events.
-    // We will be called back below (HandleMIDIMessage or HandleMIDISysex) with the assembled message.
+    // Process MIDI Packets passed to us from Core MIDI Services
     for (int i=0; i<lst.numPackets; i++, ppk = MIDIPacketNext(ppk)) {
         auto& packet = *ppk;
         auto  pData  = &packet.data[0];
         auto  length = packet.length;
-        
+
+        // Each packet contains multiple MIDI messages. This simple parser
+        // only handles the class of messages created by the KBI-1.
         while (length > 0) {
             auto byte1 = *pData++;
             length     -= 1;
@@ -135,7 +135,7 @@ void MU_ReadProc(const MIDIPacketList *pktlist, void *readProcRefCon, void *srcC
             if ((byte1 & 0xF) != SynclavierKBI1MIDIProtocolNRPNChannel)
                 continue;
             
-            // Ignore unless controller movement.
+            // Ignore unless controller message (NRPN).
             if ((byte1 & 0xF0) != 0xB0)
                 continue;
             
@@ -176,7 +176,7 @@ void MU_ReadProc(const MIDIPacketList *pktlist, void *readProcRefCon, void *srcC
                     // Process NRPN message on main application thread.
                     CFRunLoopPerformBlock(mainRunLoop, kCFRunLoopDefaultMode, ^{
 
-                        // KBI-1 could now be unplugged
+                        // KBI-1 could now be unplugged by now
                         if (kbi1InputRef == 0 || kbi1OutputRef == 0)
                             return;
 
@@ -207,7 +207,7 @@ void MU_ReadProc(const MIDIPacketList *pktlist, void *readProcRefCon, void *srcC
                                     kbi1Status = newStatus;
                                     
                                     if (kbi1Status == SynclavierKBI1MIDIProtocolNRPNMessageORKHere)
-                                        printf("Ork connected.\n");
+                                        printf("ORK connected.\n");
                                     
                                     else if (kbi1Status == SynclavierKBI1MIDIProtocolNRPNMessageVKHere)
                                         printf("VK connected.\n");
@@ -337,9 +337,7 @@ int main(int argc, const char * argv[]) {
     while (1) {
 
         // Recommended practice it to poll KBI-1 periodically. This detects the keyboard
-        // being turned off for example. A more comprehensive example would register for
-        // MIDI topology changes to be notified when the KBI-1 MIDI USB Device was
-        // removed or reconnected.
+        // being turned off for example.
         
         // Wait for device to show up. Also detect going away.
         if (kbi1InputRef == 0 || kbi1InputRef == 0) {
@@ -373,7 +371,7 @@ int main(int argc, const char * argv[]) {
         else
             ME_SendNRPN(kbi1OutputRef, SynclavierKBI1MIDIProtocolNRPNMessageStatus, SynclavierKBI1MIDIProtocolNRPNAskValue);
         
-        // Display
+        // Display test. Show a number on the ORK or VK window. Also light a button.
         if (kbi1Status == SynclavierKBI1MIDIProtocolNRPNMessageORKHere) {
             char number[10];
             snprintf(number, sizeof(number), "%4d", secondsCounter % 1000);
