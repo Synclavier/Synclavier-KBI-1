@@ -63,7 +63,11 @@ const int SynclavierKBI1MIDIProtocolNRPNMessageEcho      = 3;       // Echo's me
 const int SynclavierKBI1MIDIProtocolNRPNMessageRefresh   = 4;       // Request from KBI-1 to host for full refresh of buttons and display
 const int SynclavierKBI1MIDIProtocolNRPNAskValue         = 0x3FFF;
 
+// SynclavierKBI1MIDIProtocolNRPNMessageWhoAreYou responses
 const int SynclavierKBI1MIDIProtocolNRPNMessageIAmKBI1   = 0;
+const int SynclavierKBI1MIDIProtocolNRPNMessageIAmRegen  = 1;
+
+// SynclavierKBI1MIDIProtocolNRPNMessageStatus responses
 const int SynclavierKBI1MIDIProtocolNRPNMessageNoOneHome = 0;
 const int SynclavierKBI1MIDIProtocolNRPNMessageORKHere   = 1;
 const int SynclavierKBI1MIDIProtocolNRPNMessageVKHere    = 2;
