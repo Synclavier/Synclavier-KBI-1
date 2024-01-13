@@ -71,6 +71,7 @@ const int SynclavierKBI1MIDIProtocolNRPNMessageIAmRegen  = 1;
 const int SynclavierKBI1MIDIProtocolNRPNMessageNoOneHome = 0;
 const int SynclavierKBI1MIDIProtocolNRPNMessageORKHere   = 1;
 const int SynclavierKBI1MIDIProtocolNRPNMessageVKHere    = 2;
+const int SynclavierKBI1MIDIProtocolNRPNMessageSync3Here = 3;       // KBI1 requests status to find out who is controlling it
 
 const int SynclavierKBI1MIDIProtocolNRPNChannel = 1;                // Note: channel numbers in this file are zero-based
 
