@@ -68,10 +68,11 @@ const int SynclavierKBI1MIDIProtocolNRPNMessageIAmKBI1   = 0;
 const int SynclavierKBI1MIDIProtocolNRPNMessageIAmRegen  = 1;
 
 // SynclavierKBI1MIDIProtocolNRPNMessageStatus responses
-const int SynclavierKBI1MIDIProtocolNRPNMessageNoOneHome = 0;
-const int SynclavierKBI1MIDIProtocolNRPNMessageORKHere   = 1;
-const int SynclavierKBI1MIDIProtocolNRPNMessageVKHere    = 2;
-const int SynclavierKBI1MIDIProtocolNRPNMessageSync3Here = 3;       // KBI1 requests status to find out who is controlling it
+const int SynclavierKBI1MIDIProtocolNRPNMessageNoOneHome   =  0;
+const int SynclavierKBI1MIDIProtocolNRPNMessageORKHere     =  1;
+const int SynclavierKBI1MIDIProtocolNRPNMessageVKHere      =  2;
+const int SynclavierKBI1MIDIProtocolNRPNMessageSync3Here   =  3;    // Synclavier3
+const int SynclavierKBI1MIDIProtocolNRPNMessageOtherHere   = 99;    // SynclavierRegen
 
 const int SynclavierKBI1MIDIProtocolNRPNChannel = 1;                // Note: channel numbers in this file are zero-based
 
@@ -108,7 +109,7 @@ const int SynclavierKBI1MIDIProtocolButtonOn        = 127;
 
 // MIDI Channel 4 (0x03)
 //  - Notes 0 - 31. Note on sent when button is pressed
-//  - Note On must have velocity 127; not on velocity of 0 is treated as note off.
+//  - Note On must have velocity 127; note on velocity of 0 is treated as note off.
 //  - The right-most panel of 32 buttons on the VK
 
 const int SynclavierKBI1MIDIProtocolVKAltChannel = 3;       // Note: channel numbers in this file are zero-based
